@@ -46,8 +46,9 @@
       border-bottom: 1px solid rgba(61, 65, 81, 0.3);
     }
 
-    .navbar img {
+    .nav-logo {
       height: 36px;
+      width: auto;
     }
 
     .btn-outline {
@@ -346,7 +347,7 @@
         padding: 1rem 1.5rem;
       }
 
-      .navbar img {
+      .nav-logo {
         height: 28px;
       }
 
@@ -377,7 +378,21 @@
 
   <!-- Navbar -->
   <nav class="navbar">
-    <img src="haptal-logo.png" alt="Haptal">
+    <svg class="nav-logo" viewBox="0 0 260 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- 3x3 grid icon -->
+      <rect x="0" y="0" width="11" height="11" rx="2.5" fill="#1ABDA0"/>
+      <rect x="13.5" y="0" width="11" height="11" rx="2.5" fill="#d4d8dc"/>
+      <rect x="27" y="0" width="11" height="11" rx="2.5" fill="#3d4151"/>
+      <rect x="0" y="13.5" width="11" height="11" rx="2.5" fill="#1ABDA0"/>
+      <rect x="13.5" y="13.5" width="11" height="11" rx="2.5" fill="#1a8a78"/>
+      <rect x="27" y="13.5" width="11" height="11" rx="2.5" fill="#d4d8dc"/>
+      <rect x="0" y="27" width="11" height="11" rx="2.5" fill="#3d4151"/>
+      <rect x="13.5" y="27" width="11" height="11" rx="2.5" fill="#1ABDA0"/>
+      <rect x="27" y="27" width="11" height="11" rx="2.5" fill="#1ABDA0"/>
+      <!-- Text -->
+      <text x="52" y="32" font-family="Inter, sans-serif" font-weight="800" font-size="30" fill="#FFFFFF" letter-spacing="-0.5">Haptal</text>
+      <text x="188" y="32" font-family="Inter, sans-serif" font-weight="800" font-size="30" fill="#1ABDA0">.</text>
+    </svg>
     <button class="btn-outline">Get Early Access</button>
   </nav>
 
