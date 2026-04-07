@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haptal — Training Data for Robots</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0d1117;
+      --accent: #1ABDA0;
+      --white: #FFFFFF;
+      --muted: #3d4151;
+      --text-secondary: #8b949e;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Navbar ── */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(13, 17, 23, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(61, 65, 81, 0.3);
+    }
+
+    .navbar img {
+      height: 36px;
+    }
+
+    .btn-outline {
+      padding: 0.6rem 1.5rem;
+      border: 1.5px solid var(--accent);
+      border-radius: 8px;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.9rem;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.25s, color 0.25s;
+    }
+
+    .btn-outline:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      max-width: 800px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 .accent { color: var(--accent); }
+
+    .hero .sub {
+      margin-top: 1.5rem;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--text-secondary);
+      max-width: 640px;
+      font-weight: 400;
+      line-height: 1.7;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      margin-top: 2.5rem;
+      padding: 0.85rem 2.2rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(26, 189, 160, 0.3);
+    }
+
+    /* ── Robot Animation ── */
+    .robot-scene {
+      margin-top: 4rem;
+      width: 100%;
+      max-width: 720px;
+      height: 300px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .robot-scene svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Grid floor */
+    .grid-line {
+      stroke: var(--muted);
+      stroke-width: 0.5;
+      opacity: 0.35;
+    }
+
+    /* Robot group animation */
+    .robot-group {
+      animation: robotWalk 10s ease-in-out infinite;
+    }
+
+    @keyframes robotWalk {
+      0%   { transform: translateX(-60px); }
+      30%  { transform: translateX(160px); }
+      35%  { transform: translateX(160px); }
+      45%  { transform: translateX(160px) rotate(-8deg); }
+      50%  { transform: translateX(160px) rotate(-8deg); }
+      60%  { transform: translateX(160px) rotate(0deg); }
+      65%  { transform: translateX(160px); }
+      100% { transform: translateX(380px); }
+    }
+
+    /* Leg animations */
+    .robot-leg-left {
+      animation: legLeft 0.6s ease-in-out infinite;
+      transform-origin: 0 0;
+    }
+    .robot-leg-right {
+      animation: legRight 0.6s ease-in-out infinite;
+      transform-origin: 0 0;
+    }
+
+    @keyframes legLeft {
+      0%, 100% { transform: rotate(-12deg); }
+      50% { transform: rotate(12deg); }
+    }
+    @keyframes legRight {
+      0%, 100% { transform: rotate(12deg); }
+      50% { transform: rotate(-12deg); }
+    }
+
+    /* Arm animations */
+    .robot-arm-left {
+      animation: armLeft 0.6s ease-in-out infinite;
+      transform-origin: 0 0;
+    }
+    .robot-arm-right {
+      animation: armRight 0.6s ease-in-out infinite;
+      transform-origin: 0 0;
+    }
+
+    @keyframes armLeft {
+      0%, 100% { transform: rotate(10deg); }
+      50% { transform: rotate(-10deg); }
+    }
+    @keyframes armRight {
+      0%, 100% { transform: rotate(-10deg); }
+      50% { transform: rotate(10deg); }
+    }
+
+    /* Camera blink */
+    .camera-lens {
+      animation: camBlink 2s ease-in-out infinite;
+    }
+
+    @keyframes camBlink {
+      0%, 80%, 100% { opacity: 1; }
+      90% { opacity: 0.3; }
+    }
+
+    /* Scan beam */
+    .scan-beam {
+      opacity: 0;
+      animation: scanPulse 10s ease-in-out infinite;
+    }
+
+    @keyframes scanPulse {
+      0%, 40%  { opacity: 0; }
+      45%, 55% { opacity: 0.5; }
+      60%, 100%  { opacity: 0; }
+    }
+
+    /* Box glow */
+    .box-glow {
+      animation: boxGlow 10s ease-in-out infinite;
+    }
+
+    @keyframes boxGlow {
+      0%, 40%  { stroke: var(--muted); filter: none; }
+      45%, 55% { stroke: var(--accent); filter: drop-shadow(0 0 6px rgba(26,189,160,0.5)); }
+      60%, 100%  { stroke: var(--muted); filter: none; }
+    }
+
+    /* ── Section shared ── */
+    section {
+      padding: 6rem 2rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      margin-bottom: 3.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── How It Works ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .step-card {
+      background: rgba(61, 65, 81, 0.15);
+      border: 1px solid rgba(61, 65, 81, 0.35);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .step-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .step-icon {
+      width: 52px;
+      height: 52px;
+      margin-bottom: 1.5rem;
+    }
+
+    .step-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+
+    .step-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .step-card p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ── Who It's For ── */
+    .audience-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .audience-card {
+      background: rgba(61, 65, 81, 0.15);
+      border: 1px solid rgba(61, 65, 81, 0.35);
+      border-radius: 16px;
+      padding: 2.5rem;
+      text-align: center;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .audience-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .audience-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .audience-card p {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 3rem;
+      border-top: 1px solid rgba(61, 65, 81, 0.3);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .footer a {
+      color: var(--accent);
+      transition: opacity 0.2s;
+    }
+
+    .footer a:hover { opacity: 0.8; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem 1.5rem;
+      }
+
+      .navbar img {
+        height: 28px;
+      }
+
+      .hero {
+        padding: 7rem 1.5rem 3rem;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+      }
+
+      .robot-scene {
+        height: 220px;
+        margin-top: 2.5rem;
+      }
+
+      .footer {
+        flex-direction: column;
+        gap: 0.75rem;
+        text-align: center;
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <img src="haptal-logo.png" alt="Haptal">
+    <button class="btn-outline">Get Early Access</button>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Training Data for Robots<br>That Work in the <span class="accent">Real World.</span></h1>
+    <p class="sub">We embed egocentric data collection and sim-to-real adaptation into the environments robots actually work in&nbsp;&mdash; starting with blue-collar industries.</p>
+    <button class="btn-primary">Request a Dataset</button>
+
+    <!-- Animated Robot Scene -->
+    <div class="robot-scene">
+      <svg viewBox="0 0 720 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Grid floor -->
+        <line class="grid-line" x1="0" y1="240" x2="720" y2="240"/>
+        <line class="grid-line" x1="0" y1="260" x2="720" y2="260"/>
+        <line class="grid-line" x1="0" y1="280" x2="720" y2="280"/>
+        <line class="grid-line" x1="80"  y1="240" x2="60"  y2="300"/>
+        <line class="grid-line" x1="160" y1="240" x2="140" y2="300"/>
+        <line class="grid-line" x1="240" y1="240" x2="220" y2="300"/>
+        <line class="grid-line" x1="320" y1="240" x2="300" y2="300"/>
+        <line class="grid-line" x1="400" y1="240" x2="380" y2="300"/>
+        <line class="grid-line" x1="480" y1="240" x2="460" y2="300"/>
+        <line class="grid-line" x1="560" y1="240" x2="540" y2="300"/>
+        <line class="grid-line" x1="640" y1="240" x2="620" y2="300"/>
+        <line class="grid-line" x1="720" y1="240" x2="700" y2="300"/>
+
+        <!-- Box / Object on the floor -->
+        <g class="box-glow">
+          <rect x="430" y="214" width="26" height="26" rx="3" stroke="#3d4151" stroke-width="1.5" fill="none"/>
+          <line x1="430" y1="227" x2="456" y2="227" stroke="#3d4151" stroke-width="0.75"/>
+          <line x1="443" y1="214" x2="443" y2="240" stroke="#3d4151" stroke-width="0.75"/>
+        </g>
+
+        <!-- Robot -->
+        <g class="robot-group">
+          <!-- Legs -->
+          <g transform="translate(190, 205)">
+            <line class="robot-leg-left" x1="0" y1="0" x2="-6" y2="34" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+          <g transform="translate(200, 205)">
+            <line class="robot-leg-right" x1="0" y1="0" x2="6" y2="34" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+
+          <!-- Body -->
+          <rect x="180" y="168" width="30" height="40" rx="6" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+
+          <!-- Arms -->
+          <g transform="translate(180, 176)">
+            <line class="robot-arm-left" x1="0" y1="0" x2="-14" y2="22" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+          </g>
+          <g transform="translate(210, 176)">
+            <line class="robot-arm-right" x1="0" y1="0" x2="14" y2="22" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+          </g>
+
+          <!-- Neck -->
+          <line x1="195" y1="168" x2="195" y2="158" stroke="#FFFFFF" stroke-width="2"/>
+
+          <!-- Head -->
+          <rect x="181" y="140" width="28" height="20" rx="5" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+
+          <!-- Camera on head -->
+          <rect x="197" y="143" width="10" height="8" rx="2" stroke="var(--accent)" stroke-width="1.5" fill="none"/>
+          <circle class="camera-lens" cx="202" cy="147" r="2" fill="var(--accent)"/>
+
+          <!-- Eye -->
+          <circle cx="189" cy="151" r="1.5" fill="#FFFFFF"/>
+
+          <!-- Scan beam from camera -->
+          <polygon class="scan-beam" points="207,147 260,125 260,170" fill="url(#scanGrad)"/>
+        </g>
+
+        <!-- Gradient for scan beam -->
+        <defs>
+          <linearGradient id="scanGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how">
+    <h2 class="section-title">How It Works</h2>
+    <div class="steps">
+
+      <div class="step-card">
+        <svg class="step-icon" viewBox="0 0 52 52" fill="none">
+          <rect x="8" y="12" width="36" height="28" rx="4" stroke="var(--accent)" stroke-width="2"/>
+          <circle cx="26" cy="26" r="8" stroke="var(--accent)" stroke-width="2"/>
+          <circle cx="26" cy="26" r="3" fill="var(--accent)"/>
+          <rect x="20" y="6" width="12" height="6" rx="2" stroke="var(--accent)" stroke-width="1.5"/>
+        </svg>
+        <div class="step-label">Step 1 — Capture</div>
+        <h3>Record Your Environment</h3>
+        <p>We ship you an egocentric rig. Run it for 50–80 hours in your environment.</p>
+      </div>
+
+      <div class="step-card">
+        <svg class="step-icon" viewBox="0 0 52 52" fill="none">
+          <path d="M26 8L44 18V34L26 44L8 34V18L26 8Z" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M26 8L26 44" stroke="var(--accent)" stroke-width="1" opacity="0.5"/>
+          <path d="M8 18L44 34" stroke="var(--accent)" stroke-width="1" opacity="0.5"/>
+          <path d="M44 18L8 34" stroke="var(--accent)" stroke-width="1" opacity="0.5"/>
+        </svg>
+        <div class="step-label">Step 2 — Reconstruct</div>
+        <h3>Build a Digital Twin</h3>
+        <p>We convert your footage into a 3D simulation of your exact space.</p>
+      </div>
+
+      <div class="step-card">
+        <svg class="step-icon" viewBox="0 0 52 52" fill="none">
+          <path d="M16 14L8 26L16 38" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M36 14L44 26L36 38" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="30" y1="10" x2="22" y2="42" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div class="step-label">Step 3 — Deliver</div>
+        <h3>Plug-and-Play Datasets</h3>
+        <p>Fine-tuned synthetic datasets arrive via API, ready to plug into your training pipeline.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Who It's For -->
+  <section id="who">
+    <h2 class="section-title">Who It's For</h2>
+    <div class="audience-grid">
+      <div class="audience-card">
+        <h3>Robotics Companies</h3>
+        <p>You need environment-specific training data but can't afford 6 months of in-house collection.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <span>Haptal. &copy; 2026</span>
+    <a href="mailto:founders@haptal.ai">founders@haptal.ai</a>
+  </footer>
+
+</body>
+</html>
